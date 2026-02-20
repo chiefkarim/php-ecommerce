@@ -5,7 +5,7 @@ import type { PlaceOrderInput } from '../types/order';
 
 const STORAGE_KEY = 'cart:v1';
 
-type CartAction =
+export type CartAction =
   | { type: 'ADD_ITEM'; payload: AddToCartPayload }
   | { type: 'INCREMENT'; key: string }
   | { type: 'DECREMENT'; key: string }
@@ -14,12 +14,12 @@ type CartAction =
   | { type: 'CLEAR' }
   | { type: 'HYDRATE'; payload: CartState };
 
-const initialState: CartState = {
+export const initialState: CartState = {
   items: [],
   isOpen: false,
 };
 
-function makeCartKey(productId: string, selectedAttributes: SelectedAttributes): string {
+export function makeCartKey(productId: string, selectedAttributes: SelectedAttributes): string {
   const sorted = Object.entries(selectedAttributes).sort(([left], [right]) => left.localeCompare(right));
   return `${productId}::${sorted.map(([key, value]) => `${key}=${value}`).join('|')}`;
 }
@@ -38,7 +38,7 @@ function toCartItem(payload: AddToCartPayload): CartItem {
   };
 }
 
-function cartReducer(state: CartState, action: CartAction): CartState {
+export function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'HYDRATE':
       return action.payload;
