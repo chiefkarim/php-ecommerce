@@ -3,8 +3,14 @@
 declare(strict_types=1);
 
 use App\Infrastructure\Database\ConnectionFactory;
+use App\Infrastructure\Config\DotenvLoader;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+
+DotenvLoader::boot([
+    __DIR__ . '/../.env',
+    dirname(__DIR__, 2) . '/.env',
+]);
 
 $pdo = (new ConnectionFactory())->create();
 $schemaPath = __DIR__ . '/../database/schema.sql';
@@ -147,22 +153,25 @@ try {
     $pdo->commit();
     fwrite(STDOUT, "Seed completed successfully.\n");
 } catch (Throwable $throwable) {
-    $pdo->rollBack();
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
     throw $throwable;
 }
 
 function clearTables(PDO $pdo): void
 {
     $pdo->exec('SET FOREIGN_KEY_CHECKS=0');
-    $pdo->exec('TRUNCATE TABLE order_item_selected_attributes');
-    $pdo->exec('TRUNCATE TABLE order_items');
-    $pdo->exec('TRUNCATE TABLE orders');
-    $pdo->exec('TRUNCATE TABLE prices');
-    $pdo->exec('TRUNCATE TABLE attribute_items');
-    $pdo->exec('TRUNCATE TABLE attribute_sets');
-    $pdo->exec('TRUNCATE TABLE product_galleries');
-    $pdo->exec('TRUNCATE TABLE products');
-    $pdo->exec('TRUNCATE TABLE currencies');
-    $pdo->exec('TRUNCATE TABLE categories');
+    $pdo->exec('DELETE FROM order_item_selected_attributes');
+    $pdo->exec('DELETE FROM order_items');
+    $pdo->exec('DELETE FROM orders');
+    $pdo->exec('DELETE FROM prices');
+    $pdo->exec('DELETE FROM attribute_items');
+    $pdo->exec('DELETE FROM attribute_sets');
+    $pdo->exec('DELETE FROM product_galleries');
+    $pdo->exec('DELETE FROM products');
+    $pdo->exec('DELETE FROM currencies');
+    $pdo->exec('DELETE FROM categories');
     $pdo->exec('SET FOREIGN_KEY_CHECKS=1');
 }
