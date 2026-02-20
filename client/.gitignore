@@ -1,0 +1,5 @@
+figma/
+node_modules/
+dist/
+coverage/
+.vite/
