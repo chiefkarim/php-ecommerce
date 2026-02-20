@@ -4,3 +4,4 @@ api/vendor/
 api/.php-cs-fixer.cache
 
 api/.phpunit.cache/
+*.md
