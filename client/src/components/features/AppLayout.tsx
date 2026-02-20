@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { useCart } from '../../store/cartStore';
 import { Header } from './Header';
+import { CartOverlay } from './CartOverlay';
 
 export function AppLayout(): JSX.Element {
   const { state } = useCart();
@@ -8,9 +9,10 @@ export function AppLayout(): JSX.Element {
   return (
     <div className="min-h-screen bg-white text-ink">
       <Header />
-      <main className={state.isOpen ? 'relative z-0 bg-black/20' : ''}>
+      <main className="relative z-0">
         <Outlet />
       </main>
+      {state.isOpen ? <CartOverlay /> : null}
     </div>
   );
 }
