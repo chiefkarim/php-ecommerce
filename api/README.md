@@ -4,6 +4,7 @@
 - PHP 8.2
 - MySQL 8.0.45
 - `DATABASE_URL` environment variable (format: `mysql://user:password@host:3306/database`)
+- Environment values are auto-loaded from `api/.env` (with fallback to repository root `.env` for local dev)
 
 ## Install
 ```bash

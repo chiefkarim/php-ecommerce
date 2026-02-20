@@ -3,10 +3,16 @@
 declare(strict_types=1);
 
 use App\Controller\GraphQL;
+use App\Infrastructure\Config\DotenvLoader;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+
+DotenvLoader::boot([
+    __DIR__ . '/../.env',
+    dirname(__DIR__, 2) . '/.env',
+]);
 
 $dispatcher = FastRoute\simpleDispatcher(static function (RouteCollector $collector): void {
     $collector->post('/graphql', [GraphQL::class, 'handle']);
