@@ -1,11 +1,24 @@
 import { useParams } from 'react-router-dom';
+import { ErrorState } from '../components/base/ErrorState';
+import { LoadingState } from '../components/base/LoadingState';
+import { ProductPageView } from '../components/features/ProductPageView';
+import { useProduct } from '../hooks/useProduct';
 
 export function ProductPage(): JSX.Element {
   const { productId = '' } = useParams();
+  const { loading, error, data } = useProduct(productId);
 
-  return (
-    <section className="mx-auto max-w-7xl px-6 py-10 md:px-20">
-      <h1 className="text-3xl font-semibold">Product {productId}</h1>
-    </section>
-  );
+  if (loading) {
+    return <LoadingState label="Loading product" />;
+  }
+
+  if (error) {
+    return <ErrorState message={error} />;
+  }
+
+  if (!data) {
+    return <ErrorState message="Product not found" />;
+  }
+
+  return <ProductPageView product={data} />;
 }
