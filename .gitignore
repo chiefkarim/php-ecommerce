@@ -1,0 +1,4 @@
+/vendor/
+api/vendor/
+.php-cs-fixer.cache
+api/.php-cs-fixer.cache
