@@ -1,20 +1,32 @@
 import { useMemo } from 'react';
-import { toKebabCase } from '../../utils/format';
-import { formatPrice } from '../../utils/format';
+import { usePlaceOrder } from '../../hooks/usePlaceOrder';
 import { useCart } from '../../store/cartStore';
+import { formatPrice, toKebabCase } from '../../utils/format';
 
 function itemLabel(totalItems: number): string {
   return totalItems === 1 ? '1 Item' : `${totalItems} Items`;
 }
 
 export function CartOverlay(): JSX.Element | null {
-  const { state, totalItems, totalAmount, increment, decrement, closeOverlay } = useCart();
+  const { state, totalItems, totalAmount, increment, decrement, closeOverlay, clearCart, toOrderInput } = useCart();
+  const { loading, error, submit } = usePlaceOrder();
 
   const totalSymbol = useMemo(() => state.items[0]?.unitPrice.currency.symbol ?? '$', [state.items]);
 
   if (!state.isOpen) {
     return null;
   }
+
+  const handlePlaceOrder = async () => {
+    if (state.items.length === 0 || loading) {
+      return;
+    }
+
+    const result = await submit(toOrderInput());
+    if (result.success) {
+      clearCart();
+    }
+  };
 
   return (
     <>
@@ -30,7 +42,7 @@ export function CartOverlay(): JSX.Element | null {
           My Bag, <span className="font-medium">{itemLabel(totalItems)}</span>
         </p>
 
-        <div className="max-h-[55vh] space-y-10 overflow-auto pr-2">
+        <div className="max-h-[50vh] space-y-10 overflow-auto pr-2">
           {state.items.map((item) => (
             <article key={item.key} className="grid grid-cols-[1fr_auto_auto] gap-2">
               <div>
@@ -98,10 +110,24 @@ export function CartOverlay(): JSX.Element | null {
           ))}
         </div>
 
-        <div className="mt-10 flex items-center justify-between text-base font-semibold">
+        <div className="mt-8 flex items-center justify-between text-base font-semibold">
           <span>Total</span>
           <span data-testid="cart-total">{`${totalSymbol}${totalAmount.toFixed(2)}`}</span>
         </div>
+
+        {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
+
+        <button
+          type="button"
+          disabled={state.items.length === 0 || loading}
+          onClick={handlePlaceOrder}
+          className={[
+            'mt-8 w-full px-8 py-3 text-sm font-semibold uppercase text-white',
+            state.items.length > 0 && !loading ? 'bg-primary' : 'cursor-not-allowed bg-slate-300',
+          ].join(' ')}
+        >
+          {loading ? 'Processing...' : 'Place order'}
+        </button>
       </aside>
     </>
   );
