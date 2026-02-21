@@ -10,7 +10,8 @@ export default {
         muted: '#8D8F9A',
       },
       fontFamily: {
-        sans: ['Raleway', 'ui-sans-serif', 'system-ui'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        brand: ['Raleway', 'ui-sans-serif', 'system-ui'],
       },
       boxShadow: {
         card: '0 4px 35px rgba(168, 172, 176, 0.19)',

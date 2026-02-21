@@ -38,7 +38,7 @@ export function ProductCard({ product }: { product: Product }): JSX.Element {
         />
 
         {!product.inStock ? (
-          <p className="absolute inset-0 flex items-center justify-center text-2xl font-normal uppercase text-muted">
+          <p className="absolute inset-0 flex items-center justify-center font-brand text-[24px] font-normal uppercase leading-[38px] text-muted">
             Out of stock
           </p>
         ) : null}
@@ -55,9 +55,11 @@ export function ProductCard({ product }: { product: Product }): JSX.Element {
         ) : null}
       </div>
 
-      <div className="flex flex-col gap-1">
-        <p className={product.inStock ? 'text-lg font-light' : 'text-lg font-light text-muted'}>{product.name}</p>
-        <p className={product.inStock ? 'text-lg font-semibold' : 'text-lg font-semibold text-muted'}>
+      <div className="flex flex-col gap-1 font-brand">
+        <p className={product.inStock ? 'text-[18px] font-light leading-[29px]' : 'text-[18px] font-light leading-[29px] text-muted'}>
+          {product.name}
+        </p>
+        <p className={product.inStock ? 'text-[18px] font-normal leading-[29px]' : 'text-[18px] font-normal leading-[29px] text-muted'}>
           {primaryPrice ? formatPrice(primaryPrice) : '$0.00'}
         </p>
       </div>

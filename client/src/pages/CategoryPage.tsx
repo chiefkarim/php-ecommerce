@@ -12,7 +12,9 @@ export function CategoryPage(): JSX.Element {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-10 md:px-20">
-      <h1 className="mb-14 text-4xl font-normal capitalize">{normalizedCategory}</h1>
+      <h1 className="mb-14 font-brand text-[42px] font-normal capitalize leading-[67px] text-ink">
+        {normalizedCategory}
+      </h1>
 
       {loading ? <LoadingState label="Loading products" /> : null}
       {error ? <ErrorState message={error} /> : null}

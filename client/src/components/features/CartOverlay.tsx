@@ -38,23 +38,25 @@ export function CartOverlay(): JSX.Element | null {
       />
 
       <aside className="fixed right-6 top-20 z-30 w-[92vw] max-w-[420px] bg-white px-4 py-8 shadow-xl md:right-20">
-        <p className="mb-8 text-base font-bold">
+        <p className="mb-8 font-brand text-[16px] font-bold leading-[26px] text-ink">
           My Bag, <span className="font-medium">{itemLabel(totalItems)}</span>
         </p>
 
         <div className="max-h-[50vh] space-y-10 overflow-auto pr-2">
           {state.items.map((item) => (
             <article key={item.key} className="grid grid-cols-[1fr_auto_auto] gap-2">
-              <div>
-                <p className="text-xl font-light">{item.productName}</p>
-                <p className="mb-3 mt-2 text-base font-bold">{formatPrice(item.unitPrice)}</p>
+              <div className="font-brand text-ink">
+                <p className="text-[18px] font-light leading-[29px]">{item.productName}</p>
+                <p className="mb-3 mt-2 text-[16px] font-normal leading-[26px]">
+                  {formatPrice(item.unitPrice)}
+                </p>
 
                 {item.attributes.map((attribute) => {
                   const attributeTestId = `cart-item-attribute-${toKebabCase(attribute.name)}`;
 
                   return (
                     <div key={attribute.id} data-testid={attributeTestId} className="mb-2">
-                      <p className="mb-2 text-sm font-semibold">{attribute.name}:</p>
+                      <p className="mb-2 text-[14px] font-normal leading-[16px] text-ink">{attribute.name}:</p>
                       <div className="flex flex-wrap gap-2">
                         {attribute.items.map((option) => {
                           const selected = item.selectedAttributes[attribute.id] === option.id;
@@ -65,9 +67,9 @@ export function CartOverlay(): JSX.Element | null {
                               key={option.id}
                               data-testid={selected ? `${baseId}-selected` : baseId}
                               className={[
-                                'inline-flex min-h-6 min-w-10 items-center justify-center border px-2 text-xs',
-                                selected ? 'border-ink bg-ink text-white' : 'border-slate-300 bg-white text-ink',
-                                attribute.type === 'swatch' ? 'h-6 w-6 min-w-6 p-0' : '',
+                                'inline-flex min-h-6 min-w-10 items-center justify-center border px-2 text-[14px] leading-[22px]',
+                                selected ? 'border-ink bg-ink text-white' : 'border-ink bg-white text-ink',
+                                attribute.type === 'swatch' ? 'h-5 w-5 min-w-5 p-0' : '',
                               ].join(' ')}
                               style={attribute.type === 'swatch' ? { backgroundColor: option.value } : undefined}
                             >
@@ -81,24 +83,24 @@ export function CartOverlay(): JSX.Element | null {
                 })}
               </div>
 
-              <div className="flex flex-col items-center justify-between">
+              <div className="flex flex-col items-center justify-between font-brand text-ink">
                 <button
                   type="button"
                   data-testid="cart-item-amount-increase"
                   onClick={() => increment(item.key)}
-                  className="h-8 w-8 border border-ink text-lg"
+                  className="h-6 w-6 border border-ink text-lg leading-none"
                   aria-label="Increase quantity"
                 >
                   +
                 </button>
-                <span data-testid="cart-item-amount" className="text-base font-medium">
+                <span data-testid="cart-item-amount" className="text-[16px] font-medium leading-[26px]">
                   {item.quantity}
                 </span>
                 <button
                   type="button"
                   data-testid="cart-item-amount-decrease"
                   onClick={() => decrement(item.key)}
-                  className="h-8 w-8 border border-ink text-lg"
+                  className="h-6 w-6 border border-ink text-lg leading-none"
                   aria-label="Decrease quantity"
                 >
                   -
@@ -110,7 +112,7 @@ export function CartOverlay(): JSX.Element | null {
           ))}
         </div>
 
-        <div className="mt-8 flex items-center justify-between text-base font-semibold">
+        <div className="mt-8 flex items-center justify-between font-brand text-[16px] font-semibold leading-[18px] text-ink">
           <span>Total</span>
           <span data-testid="cart-total">{`${totalSymbol}${totalAmount.toFixed(2)}`}</span>
         </div>
@@ -122,7 +124,7 @@ export function CartOverlay(): JSX.Element | null {
           disabled={state.items.length === 0 || loading}
           onClick={handlePlaceOrder}
           className={[
-            'mt-8 w-full px-8 py-3 text-sm font-semibold uppercase text-white',
+            'mt-8 w-full px-8 py-3 font-brand text-[14px] font-semibold uppercase leading-[17px] text-white',
             state.items.length > 0 && !loading ? 'bg-primary' : 'cursor-not-allowed bg-slate-300',
           ].join(' ')}
         >

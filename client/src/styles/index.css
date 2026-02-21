@@ -1,10 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Raleway:wght@400;600;700&family=Roboto:wght@400&family=Roboto+Condensed:wght@700&family=Source+Sans+3:wght@400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-family: Inter, system-ui, sans-serif;
+}
+
 :root {
-  font-family: Raleway, system-ui, sans-serif;
-  color: #1d1f22;
+  color: #0f172a;
   background: #ffffff;
 }
 
@@ -15,4 +20,142 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+@layer base {
+  h1 {
+    font-size: 48px;
+    line-height: 48px;
+    font-weight: 800;
+    letter-spacing: -0.012em;
+    color: #0f172a;
+  }
+
+  h2 {
+    font-size: 30px;
+    line-height: 36px;
+    font-weight: 600;
+    letter-spacing: -0.0075em;
+    color: #0f172a;
+  }
+
+  h3 {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    color: #0f172a;
+  }
+
+  h4 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: #0f172a;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 28px;
+    font-weight: 400;
+    color: #0f172a;
+  }
+
+  ul,
+  ol {
+    font-size: 16px;
+    line-height: 24px;
+    color: #0f172a;
+  }
+
+  li {
+    margin: 0.25rem 0;
+  }
+
+  blockquote {
+    font-style: italic;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0f172a;
+    border-left: 2px solid #e3e3e3;
+    padding-left: 16px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0f172a;
+  }
+
+  th,
+  td {
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    text-align: left;
+  }
+
+  th {
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .font-brand {
+    font-family: Raleway, ui-sans-serif, system-ui;
+  }
+
+  .font-roboto {
+    font-family: Roboto, ui-sans-serif, system-ui;
+  }
+
+  .font-roboto-condensed {
+    font-family: 'Roboto Condensed', ui-sans-serif, system-ui;
+  }
+
+  .font-source {
+    font-family: 'Source Sans 3', ui-sans-serif, system-ui;
+  }
+}
+
+@layer components {
+  .product-description h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+  }
+
+  .product-description h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .product-description h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .product-description p {
+    margin: 0;
+  }
+
+  .product-description ul,
+  .product-description ol {
+    padding-left: 1.25rem;
+    margin: 0;
+  }
+
+  .product-description li {
+    margin: 0.35rem 0;
+  }
+
+  .product-description a {
+    color: #5ece7b;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 }

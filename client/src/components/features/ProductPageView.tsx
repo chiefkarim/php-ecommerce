@@ -97,12 +97,16 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
       </div>
 
       <div className="order-3">
-        <h1 className="text-3xl font-semibold">{product.brand}</h1>
-        <h2 className="mb-8 mt-4 text-3xl font-normal">{product.name}</h2>
+        <h1 className="font-brand text-[30px] font-semibold leading-[27px] text-ink">{product.brand}</h1>
+        <h2 className="mb-8 mt-4 font-brand text-[30px] font-semibold leading-[27px] text-ink">
+          {product.name}
+        </h2>
 
         {product.attributes.map((attribute) => (
           <div key={attribute.id} data-testid={`product-attribute-${toKebabCase(attribute.name)}`} className="mb-6">
-            <p className="mb-2 text-base font-bold uppercase">{attribute.name}:</p>
+            <p className="mb-2 font-roboto-condensed text-[18px] font-bold uppercase leading-[18px] text-ink">
+              {attribute.name}:
+            </p>
             <div className="flex flex-wrap gap-3">
               {attribute.items.map((item) => {
                 const isSelected = selected[attribute.id] === item.id;
@@ -113,13 +117,25 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
                     type="button"
                     onClick={() => setSelected((previous) => ({ ...previous, [attribute.id]: item.id }))}
                     className={[
-                      'min-h-10 min-w-14 border px-3 text-sm',
-                      isSelected ? 'border-ink bg-ink text-white' : 'border-slate-400 bg-white text-ink',
-                      attribute.type === 'swatch' ? 'h-9 w-9 min-w-9 p-0' : '',
+                      attribute.type === 'swatch'
+                        ? [
+                            'flex h-9 w-9 min-w-9 items-center justify-center border-0 bg-white p-0',
+                            isSelected
+                              ? 'ring-1 ring-primary ring-offset-2 ring-offset-white'
+                              : 'ring-1 ring-[#A6A6A6]/60 ring-offset-0',
+                          ].join(' ')
+                        : [
+                            'min-h-11 min-w-[63px] border px-3 font-source text-[16px] leading-[18px] tracking-[0.05em]',
+                            isSelected ? 'border-ink bg-ink text-white' : 'border-ink bg-white text-ink',
+                          ].join(' '),
                     ].join(' ')}
                     style={attribute.type === 'swatch' ? { backgroundColor: item.value } : undefined}
                   >
-                    {attribute.type === 'swatch' ? '' : item.value}
+                    {attribute.type === 'swatch' ? (
+                      <span className="h-8 w-8" style={{ backgroundColor: item.value }} />
+                    ) : (
+                      item.value
+                    )}
                   </button>
                 );
               })}
@@ -127,8 +143,12 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
           </div>
         ))}
 
-        <p className="mt-8 text-base font-bold uppercase">Price:</p>
-        <p className="mb-8 mt-2 text-2xl font-bold">{product.prices[0] ? formatPrice(product.prices[0]) : '$0.00'}</p>
+        <p className="mt-8 font-roboto-condensed text-[18px] font-bold uppercase leading-[18px] text-ink">
+          Price:
+        </p>
+        <p className="mb-8 mt-2 font-brand text-[24px] font-bold leading-[18px] text-ink">
+          {product.prices[0] ? formatPrice(product.prices[0]) : '$0.00'}
+        </p>
 
         <button
           type="button"
@@ -136,14 +156,17 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
           disabled={!hasAllSelections || !product.inStock}
           onClick={onAddToCart}
           className={[
-            'mb-8 w-full px-8 py-4 text-base font-semibold uppercase text-white',
+            'mb-8 w-full px-8 py-4 font-brand text-[16px] font-semibold uppercase leading-[19px] text-white',
             hasAllSelections && product.inStock ? 'bg-primary' : 'cursor-not-allowed bg-slate-300',
           ].join(' ')}
         >
           Add to cart
         </button>
 
-        <div data-testid="product-description" className="space-y-4 text-base leading-7 text-ink">
+        <div
+          data-testid="product-description"
+          className="product-description space-y-4 font-roboto text-[16px] leading-[26px] text-ink"
+        >
           {descriptionNodes}
         </div>
       </div>

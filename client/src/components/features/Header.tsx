@@ -16,7 +16,7 @@ export function Header(): JSX.Element {
   return (
     <header className="sticky top-0 z-30 h-20 bg-white">
       <div className="mx-auto grid h-full max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center px-6 md:px-[101px]">
-        <nav className="flex min-h-14 flex-wrap items-end gap-2 text-base uppercase">
+        <nav className="flex min-h-14 flex-wrap items-end gap-2 font-brand text-base uppercase">
           {loading ? <LoadingState label="Loading categories" /> : null}
           {error ? <ErrorState message={error} /> : null}
           {data?.map((category) => {
