@@ -14,6 +14,30 @@ DotenvLoader::boot([
     dirname(__DIR__, 2) . '/.env',
 ]);
 
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowOrigin = false;
+
+if ($origin !== '') {
+    if (preg_match('/^http:\/\/localhost(?::\\d+)?$/', $origin) === 1) {
+        $allowOrigin = true;
+    } elseif (preg_match('/^https:\\/\\/([a-z0-9-]+\\.)*vercel\\.app$/i', $origin) === 1) {
+        $allowOrigin = true;
+    }
+}
+
+if ($allowOrigin) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+    header('Vary: Origin');
+    header('Access-Control-Allow-Methods: POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Max-Age: 86400');
+}
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
 $dispatcher = FastRoute\simpleDispatcher(static function (RouteCollector $collector): void {
     $collector->post('/graphql', [GraphQL::class, 'handle']);
 });
