@@ -10,7 +10,30 @@ export type GraphQLResponse<TData> = {
   errors?: Array<{ message: string }>;
 };
 
-const API_URL = import.meta.env.VITE_GRAPHQL_ENDPOINT ?? '/graphql';
+const envEndpoint = import.meta.env.VITE_GRAPHQL_ENDPOINT as string | undefined;
+const envBackendUrl = import.meta.env.VITE_BACKEND_URL as string | undefined;
+
+const normalizeEndpoint = (endpoint: string): string => {
+  if (endpoint.startsWith('/')) {
+    return endpoint;
+  }
+
+  try {
+    const url = new URL(endpoint);
+    if (url.pathname === '' || url.pathname === '/') {
+      url.pathname = '/graphql';
+    }
+    return url.toString();
+  } catch {
+    return endpoint;
+  }
+};
+
+const API_URL = envEndpoint
+  ? normalizeEndpoint(envEndpoint)
+  : envBackendUrl
+    ? normalizeEndpoint(envBackendUrl)
+    : '/graphql';
 
 export async function graphqlRequest<TData, TVariables extends Record<string, unknown> | undefined>(
   query: string,
