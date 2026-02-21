@@ -53,11 +53,7 @@ export function Header(): JSX.Element {
             className="relative inline-flex h-10 w-10 items-center justify-center rounded-full"
             aria-label="Open cart"
           >
-            <svg viewBox="0 0 20 20" className="h-5 w-5 fill-none stroke-[#43464E] stroke-[1.6]">
-              <path d="M1 2h2l2.6 9.2a1 1 0 0 0 1 .8h7.6a1 1 0 0 0 1-.7L18 5H6.3" />
-              <circle cx="8" cy="16" r="1.4" />
-              <circle cx="15" cy="16" r="1.4" />
-            </svg>
+            <img src="/black-cart.svg" alt="" className="h-5 w-5" aria-hidden="true" />
             {totalItems > 0 ? (
               <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-xs font-bold text-white">
                 {totalItems}

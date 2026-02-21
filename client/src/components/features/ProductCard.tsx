@@ -50,7 +50,7 @@ export function ProductCard({ product }: { product: Product }): JSX.Element {
             aria-label={`Quick shop ${product.name}`}
             className="absolute bottom-4 right-4 hidden h-12 w-12 items-center justify-center rounded-full bg-primary text-xl text-white shadow-md group-hover:inline-flex"
           >
-            🛒
+            <img src="/white-cart.svg" alt="" className="h-6 w-6" aria-hidden="true" />
           </button>
         ) : null}
       </div>
