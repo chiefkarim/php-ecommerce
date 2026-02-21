@@ -20,5 +20,5 @@ export function HomeRedirectPage(): JSX.Element {
     return <ErrorState message="No category found" />;
   }
 
-  return <Navigate to={`/category/${encodeURIComponent(firstCategory)}`} replace />;
+  return <Navigate to={`/${encodeURIComponent(firstCategory)}`} replace />;
 }

@@ -6,7 +6,7 @@ import { ErrorState } from '../base/ErrorState';
 import { LoadingState } from '../base/LoadingState';
 
 function getCategoryPath(name: string): string {
-  return `/category/${encodeURIComponent(name)}`;
+  return `/${encodeURIComponent(name)}`;
 }
 
 export function Header(): JSX.Element {
