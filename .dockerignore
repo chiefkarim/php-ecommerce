@@ -1,0 +1,8 @@
+.git
+.github
+client
+node_modules
+api/vendor
+**/dist
+**/coverage
+**/.DS_Store
