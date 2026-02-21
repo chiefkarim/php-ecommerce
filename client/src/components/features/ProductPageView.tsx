@@ -52,7 +52,7 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
 
   return (
     <section className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 py-10 md:grid-cols-[88px_1fr_360px] md:px-20">
-      <div className="order-2 flex gap-3 overflow-x-auto md:order-1 md:flex-col">
+      <div className="order-2 flex gap-3 md:order-1 md:max-h-[560px] md:flex-col md:overflow-y-auto md:overflow-x-hidden">
         {product.gallery.map((image, index) => (
           <button
             key={image}
