@@ -110,12 +110,14 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
             <div className="flex flex-wrap gap-3">
               {attribute.items.map((item) => {
                 const isSelected = selected[attribute.id] === item.id;
+                const optionTestId = `product-attribute-${toKebabCase(attribute.name)}-${item.value}`;
 
                 return (
                   <button
                     key={item.id}
                     type="button"
                     onClick={() => setSelected((previous) => ({ ...previous, [attribute.id]: item.id }))}
+                    data-testid={optionTestId}
                     className={[
                       attribute.type === 'swatch'
                         ? [
