@@ -12,7 +12,7 @@ function getCategoryPath(name: string): string {
 export function Header(): JSX.Element {
   const location = useLocation();
   const { loading, error, data } = useCategories();
-  const { totalItems, openOverlay } = useCart();
+  const { totalItems, openOverlay, closeOverlay, state } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -65,7 +65,7 @@ export function Header(): JSX.Element {
           <button
             type="button"
             data-testid="cart-btn"
-            onClick={openOverlay}
+            onClick={() => (state.isOpen ? closeOverlay() : openOverlay())}
             className="relative inline-flex h-10 w-10 items-center justify-center rounded-full"
             aria-label="Open cart"
           >
