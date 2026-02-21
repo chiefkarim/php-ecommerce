@@ -25,9 +25,9 @@ export function ProductCard({ product }: { product: Product }): JSX.Element {
     <Link
       to={`/product/${product.id}`}
       data-testid={`product-${toKebabCase(product.name)}`}
-      className="group relative flex flex-col gap-6 p-4 transition hover:shadow-card"
+      className="group relative flex flex-col gap-6 p-3 transition hover:shadow-card sm:p-4"
     >
-      <div className="relative h-[330px] overflow-hidden">
+      <div className="relative h-[220px] overflow-hidden sm:h-[280px] md:h-[330px]">
         <img
           src={product.gallery[0] ?? ''}
           alt={product.name}
@@ -38,7 +38,7 @@ export function ProductCard({ product }: { product: Product }): JSX.Element {
         />
 
         {!product.inStock ? (
-          <p className="absolute inset-0 flex items-center justify-center font-brand text-[24px] font-normal uppercase leading-[38px] text-muted">
+          <p className="absolute inset-0 flex items-center justify-center font-brand text-[18px] font-normal uppercase leading-[28px] text-muted sm:text-[24px] sm:leading-[38px]">
             Out of stock
           </p>
         ) : null}
@@ -56,10 +56,22 @@ export function ProductCard({ product }: { product: Product }): JSX.Element {
       </div>
 
       <div className="flex flex-col gap-1 font-brand">
-        <p className={product.inStock ? 'text-[18px] font-light leading-[29px]' : 'text-[18px] font-light leading-[29px] text-muted'}>
+        <p
+          className={
+            product.inStock
+              ? 'text-[16px] font-light leading-[24px] sm:text-[18px] sm:leading-[29px]'
+              : 'text-[16px] font-light leading-[24px] text-muted sm:text-[18px] sm:leading-[29px]'
+          }
+        >
           {product.name}
         </p>
-        <p className={product.inStock ? 'text-[18px] font-normal leading-[29px]' : 'text-[18px] font-normal leading-[29px] text-muted'}>
+        <p
+          className={
+            product.inStock
+              ? 'text-[16px] font-normal leading-[24px] sm:text-[18px] sm:leading-[29px]'
+              : 'text-[16px] font-normal leading-[24px] text-muted sm:text-[18px] sm:leading-[29px]'
+          }
+        >
           {primaryPrice ? formatPrice(primaryPrice) : '$0.00'}
         </p>
       </div>

@@ -51,8 +51,8 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
   };
 
   return (
-    <section className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 py-10 md:grid-cols-[88px_1fr_360px] md:px-20">
-      <div className="order-2 flex gap-3 md:order-1 md:max-h-[560px] md:flex-col md:overflow-y-auto md:overflow-x-hidden">
+    <section className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 md:grid-cols-[88px_1fr_360px] md:px-20 md:py-10">
+      <div className="order-2 flex gap-3 overflow-x-auto md:order-1 md:max-h-[560px] md:flex-col md:overflow-y-auto md:overflow-x-hidden">
         {product.gallery.map((image, index) => (
           <button
             key={image}
@@ -70,7 +70,7 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
       </div>
 
       <div className="order-1 md:order-2" data-testid="product-gallery">
-        <div className="relative max-h-[560px] overflow-hidden">
+        <div className="relative max-h-[360px] overflow-hidden md:max-h-[560px]">
           <img src={currentImage} alt={product.name} className="h-full w-full object-contain" />
 
           {product.gallery.length > 1 ? (
@@ -98,12 +98,12 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
 
       <div className="order-3">
         <h1 className="font-brand text-[30px] font-semibold leading-[27px] text-ink">{product.brand}</h1>
-        <h2 className="mb-8 mt-4 font-brand text-[30px] font-semibold leading-[27px] text-ink">
+        <h2 className="mb-6 mt-3 font-brand text-[30px] font-semibold leading-[27px] text-ink md:mb-8 md:mt-4">
           {product.name}
         </h2>
 
         {product.attributes.map((attribute) => (
-          <div key={attribute.id} data-testid={`product-attribute-${toKebabCase(attribute.name)}`} className="mb-6">
+          <div key={attribute.id} data-testid={`product-attribute-${toKebabCase(attribute.name)}`} className="mb-4 md:mb-6">
             <p className="mb-2 font-roboto-condensed text-[18px] font-bold uppercase leading-[18px] text-ink">
               {attribute.name}:
             </p>
@@ -143,10 +143,10 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
           </div>
         ))}
 
-        <p className="mt-8 font-roboto-condensed text-[18px] font-bold uppercase leading-[18px] text-ink">
+        <p className="mt-6 font-roboto-condensed text-[18px] font-bold uppercase leading-[18px] text-ink md:mt-8">
           Price:
         </p>
-        <p className="mb-8 mt-2 font-brand text-[24px] font-bold leading-[18px] text-ink">
+        <p className="mb-6 mt-2 font-brand text-[24px] font-bold leading-[18px] text-ink md:mb-8">
           {product.prices[0] ? formatPrice(product.prices[0]) : '$0.00'}
         </p>
 
@@ -156,7 +156,7 @@ export function ProductPageView({ product }: { product: Product }): JSX.Element 
           disabled={!hasAllSelections || !product.inStock}
           onClick={onAddToCart}
           className={[
-            'mb-8 w-full px-8 py-4 font-brand text-[16px] font-semibold uppercase leading-[19px] text-white',
+            'mb-6 w-full px-8 py-4 font-brand text-[16px] font-semibold uppercase leading-[19px] text-white md:mb-8',
             hasAllSelections && product.inStock ? 'bg-primary' : 'cursor-not-allowed bg-slate-300',
           ].join(' ')}
         >
