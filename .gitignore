@@ -5,4 +5,3 @@ api/.php-cs-fixer.cache
 
 api/.phpunit.cache/
 *.md
-.env
