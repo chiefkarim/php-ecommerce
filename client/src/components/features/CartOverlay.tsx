@@ -37,7 +37,10 @@ export function CartOverlay(): JSX.Element | null {
         onClick={closeOverlay}
       />
 
-      <aside className="fixed right-6 top-20 z-30 w-[92vw] max-w-[420px] bg-white px-4 py-8 shadow-xl md:right-20">
+      <aside
+        data-testid="cart-overlay"
+        className="fixed right-6 top-20 z-30 w-[92vw] max-w-[420px] bg-white px-4 py-8 shadow-xl md:right-20"
+      >
         <p className="mb-8 font-brand text-[16px] font-bold leading-[26px] text-ink">
           My Bag, <span className="font-medium">{itemLabel(totalItems)}</span>
         </p>
