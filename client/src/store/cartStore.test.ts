@@ -8,7 +8,7 @@ const baseProduct: Product = {
   inStock: true,
   gallery: ['image-1'],
   description: '<p>Desc</p>',
-  category: 'clothes',
+  categoryId: '1',
   brand: 'Brand',
   attributes: [
     {

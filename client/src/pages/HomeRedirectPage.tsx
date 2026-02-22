@@ -14,7 +14,7 @@ export function HomeRedirectPage(): JSX.Element {
     return <ErrorState message={error} />;
   }
 
-  const firstCategory = data?.[0]?.name;
+  const firstCategory = data?.[0]?.slug;
 
   if (!firstCategory) {
     return <ErrorState message="No category found" />;

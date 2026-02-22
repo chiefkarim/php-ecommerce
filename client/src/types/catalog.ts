@@ -1,5 +1,7 @@
 export type Category = {
+  id: string;
   name: string;
+  slug: string;
 };
 
 export type Currency = {
@@ -31,7 +33,7 @@ export type Product = {
   inStock: boolean;
   gallery: string[];
   description: string;
-  category: string;
+  categoryId: string;
   brand: string;
   attributes: AttributeSet[];
   prices: Price[];

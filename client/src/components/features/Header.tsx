@@ -5,8 +5,8 @@ import { useCart } from '../../store/cartStore';
 import { ErrorState } from '../base/ErrorState';
 import { LoadingState } from '../base/LoadingState';
 
-function getCategoryPath(name: string): string {
-  return `/${encodeURIComponent(name)}`;
+function getCategoryPath(slug: string): string {
+  return `/${encodeURIComponent(slug)}`;
 }
 
 export function Header(): JSX.Element {
@@ -36,12 +36,12 @@ export function Header(): JSX.Element {
           {loading ? <LoadingState label="Loading categories" /> : null}
           {error ? <ErrorState message={error} /> : null}
           {data?.map((category) => {
-            const href = getCategoryPath(category.name);
+            const href = getCategoryPath(category.slug);
             const isActive = location.pathname === href;
 
             return (
               <Link
-                key={category.name}
+                key={category.id}
                 to={href}
                 data-testid={isActive ? 'active-category-link' : 'category-link'}
                 className={[
@@ -95,12 +95,12 @@ export function Header(): JSX.Element {
               {loading ? <LoadingState label="Loading categories" /> : null}
               {error ? <ErrorState message={error} /> : null}
               {data?.map((category) => {
-                const href = getCategoryPath(category.name);
+                const href = getCategoryPath(category.slug);
                 const isActive = location.pathname === href;
 
                 return (
                   <Link
-                    key={category.name}
+                    key={category.id}
                     to={href}
                     onClick={() => setIsMenuOpen(false)}
                     data-testid={isActive ? 'active-category-link' : 'category-link'}
