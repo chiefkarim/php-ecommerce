@@ -14,7 +14,7 @@ final class ProductTypeFactory
             inStock: (bool) $payload['inStock'],
             gallery: $payload['gallery'],
             description: (string) $payload['description'],
-            category: (string) $payload['category'],
+            categoryId: (int) $payload['categoryId'],
             brand: (string) $payload['brand'],
             attributes: $payload['attributes'],
             prices: $payload['prices']

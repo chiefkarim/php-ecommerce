@@ -26,9 +26,9 @@ final class CatalogService
     /**
      * @return array<int, AbstractProduct>
      */
-    public function products(?string $category): array
+    public function products(?int $categoryId): array
     {
-        return $this->productRepository->findByCategory($category);
+        return $this->productRepository->findByCategory($categoryId);
     }
 
     public function product(string $productId): ?AbstractProduct

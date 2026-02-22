@@ -26,7 +26,9 @@ final class TypeRegistry
         $this->categoryType = new ObjectType([
             'name' => 'Category',
             'fields' => [
+                'id' => Type::nonNull(Type::id()),
                 'name' => Type::nonNull(Type::string()),
+                'slug' => Type::nonNull(Type::string()),
             ],
         ]);
 
@@ -118,7 +120,7 @@ final class TypeRegistry
                 'inStock' => Type::nonNull(Type::boolean()),
                 'gallery' => Type::nonNull(Type::listOf(Type::nonNull(Type::string()))),
                 'description' => Type::nonNull(Type::string()),
-                'category' => Type::nonNull(Type::string()),
+                'categoryId' => Type::nonNull(Type::id()),
                 'brand' => Type::nonNull(Type::string()),
                 'attributes' => Type::nonNull(Type::listOf(Type::nonNull($this->attributeSet()))),
                 'prices' => Type::nonNull(Type::listOf(Type::nonNull($this->price()))),

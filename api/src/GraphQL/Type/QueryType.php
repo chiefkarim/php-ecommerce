@@ -36,7 +36,11 @@ final class QueryType
                         $categories = $this->catalogService->categories();
 
                         return array_map(
-                            static fn (Category $category): array => ['name' => $category->name],
+                            static fn (Category $category): array => [
+                                'id' => (string) $category->id,
+                                'name' => $category->name,
+                                'slug' => $category->slug,
+                            ],
                             $categories
                         );
                     },
@@ -44,14 +48,15 @@ final class QueryType
                 'products' => [
                     'type' => Type::nonNull($this->typeRegistry->listOfNonNull($this->typeRegistry->product())),
                     'args' => [
-                        'category' => ['type' => Type::string()],
+                        'categoryId' => ['type' => Type::id()],
                     ],
                     'resolve' => function ($rootValue, array $args): array {
-                        $category = isset($args['category']) && is_string($args['category']) ? $args['category'] : null;
+                        $categoryValue = $args['categoryId'] ?? null;
+                        $categoryId = is_string($categoryValue) || is_int($categoryValue) ? (int) $categoryValue : null;
 
                         return array_map(
                             fn (AbstractProduct $product): array => $this->mapProduct($product),
-                            $this->catalogService->products($category)
+                            $this->catalogService->products($categoryId)
                         );
                     },
                 ],
@@ -94,7 +99,7 @@ final class QueryType
             'inStock' => $product->inStock,
             'gallery' => $product->gallery,
             'description' => $product->description,
-            'category' => $product->category,
+            'categoryId' => (string) $product->categoryId,
             'brand' => $product->brand,
             'attributes' => array_map(
                 static fn (AbstractAttributeSet $attributeSet): array => $attributeSet->toArray(),

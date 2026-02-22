@@ -19,7 +19,7 @@ final class OrderServiceTest extends TestCase
     public function testRejectsMissingAttributeSelection(): void
     {
         $productRepository = new class implements ProductRepositoryInterface {
-            public function findByCategory(?string $category): array
+            public function findByCategory(?int $categoryId): array
             {
                 return [];
             }
@@ -32,7 +32,7 @@ final class OrderServiceTest extends TestCase
                     inStock: true,
                     gallery: [],
                     description: '',
-                    category: 'tech',
+                    categoryId: 1,
                     brand: 'Sony',
                     attributes: [
                         new TextAttributeSet('Capacity', 'Capacity', [
@@ -70,7 +70,7 @@ final class OrderServiceTest extends TestCase
     public function testCreatesOrderWhenInputIsValid(): void
     {
         $productRepository = new class implements ProductRepositoryInterface {
-            public function findByCategory(?string $category): array
+            public function findByCategory(?int $categoryId): array
             {
                 return [];
             }
@@ -83,7 +83,7 @@ final class OrderServiceTest extends TestCase
                     inStock: true,
                     gallery: [],
                     description: '',
-                    category: 'tech',
+                    categoryId: 1,
                     brand: 'Sony',
                     attributes: [
                         new TextAttributeSet('Capacity', 'Capacity', [

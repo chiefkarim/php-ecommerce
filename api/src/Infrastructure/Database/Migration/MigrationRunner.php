@@ -17,12 +17,12 @@ final class MigrationRunner
         $migrations = $this->resolveMigrations();
 
         if ($onlyClassName !== null) {
-            $className = $this->resolveClassName($onlyClassName);
-            if (!isset($migrations[$className])) {
+            $classKey = $this->normalizeClassKey($onlyClassName);
+            if (!isset($migrations[$classKey])) {
                 throw new RuntimeException('Unknown migration class: ' . $onlyClassName);
             }
 
-            $this->runMigration($pdo, $direction, $migrations[$className]);
+            $this->runMigration($pdo, $direction, $migrations[$classKey]);
             return;
         }
 
@@ -99,6 +99,16 @@ final class MigrationRunner
     private function resolveClassName(string $className): string
     {
         return __NAMESPACE__ . '\\' . $className;
+    }
+
+    private function normalizeClassKey(string $onlyClassName): string
+    {
+        if (str_contains($onlyClassName, '\\')) {
+            $parts = explode('\\', $onlyClassName);
+            return (string) end($parts);
+        }
+
+        return $onlyClassName;
     }
 
     private function warnAndDelay(string $kind, string $direction): void

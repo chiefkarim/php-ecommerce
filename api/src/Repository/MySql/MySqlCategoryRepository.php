@@ -11,11 +11,15 @@ final class MySqlCategoryRepository extends AbstractMySqlRepository implements C
 {
     public function findAll(): array
     {
-        $statement = $this->pdo()->query('SELECT name FROM categories ORDER BY id ASC');
+        $statement = $this->pdo()->query('SELECT id, name, slug FROM categories ORDER BY id ASC');
         $rows = $statement !== false ? $statement->fetchAll() : [];
 
         return array_map(
-            static fn (array $row): Category => new Category((string) $row['name']),
+            static fn (array $row): Category => new Category(
+                (int) $row['id'],
+                (string) $row['name'],
+                (string) $row['slug']
+            ),
             $rows
         );
     }

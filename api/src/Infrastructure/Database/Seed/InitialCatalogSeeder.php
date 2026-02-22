@@ -20,8 +20,8 @@ final class InitialCatalogSeeder extends AbstractSeeder
         $pdo->beginTransaction();
 
         try {
-            $this->seedCategories($pdo, $data['categories']);
-            $this->seedProducts($pdo, $data['products']);
+            $categoryMap = $this->seedCategories($pdo, $data['categories']);
+            $this->seedProducts($pdo, $data['products'], $categoryMap);
 
             $pdo->commit();
             $this->writeSuccessMessage();
@@ -74,26 +74,41 @@ final class InitialCatalogSeeder extends AbstractSeeder
     /**
      * @param array<int, mixed> $categories
      */
-    private function seedCategories(PDO $pdo, array $categories): void
+    /**
+     * @param array<int, mixed> $categories
+     * @return array<string, int>
+     */
+    private function seedCategories(PDO $pdo, array $categories): array
     {
-        $insertCategory = $pdo->prepare('INSERT INTO categories (name) VALUES (:name)');
+        $insertCategory = $pdo->prepare('INSERT INTO categories (name, slug) VALUES (:name, :slug)');
+        $map = [];
 
         foreach ($categories as $category) {
             if (!is_array($category) || !is_string($category['name'] ?? null)) {
                 continue;
             }
 
-            $insertCategory->execute(['name' => $category['name']]);
+            $name = (string) $category['name'];
+            $insertCategory->execute([
+                'name' => $name,
+                'slug' => $this->slugify($name),
+            ]);
+            $map[$name] = (int) $pdo->lastInsertId();
         }
+
+        return $map;
     }
 
     /**
      * @param array<int, mixed> $products
      */
-    private function seedProducts(PDO $pdo, array $products): void
+    /**
+     * @param array<string, int> $categoryMap
+     */
+    private function seedProducts(PDO $pdo, array $products, array $categoryMap): void
     {
         $insertCurrency = $pdo->prepare('INSERT INTO currencies (label, symbol) VALUES (:label, :symbol) ON DUPLICATE KEY UPDATE symbol = VALUES(symbol)');
-        $insertProduct = $pdo->prepare('INSERT INTO products (id, name, in_stock, description, category_name, brand) VALUES (:id, :name, :in_stock, :description, :category_name, :brand)');
+        $insertProduct = $pdo->prepare('INSERT INTO products (id, name, in_stock, description, category_id, brand) VALUES (:id, :name, :in_stock, :description, :category_id, :brand)');
         $insertGallery = $pdo->prepare('INSERT INTO product_galleries (product_id, image_url, sort_order) VALUES (:product_id, :image_url, :sort_order)');
         $insertAttributeSet = $pdo->prepare('INSERT INTO attribute_sets (product_id, external_id, name, type, sort_order) VALUES (:product_id, :external_id, :name, :type, :sort_order)');
         $insertAttributeItem = $pdo->prepare('INSERT INTO attribute_items (attribute_set_id, external_id, display_value, value, sort_order) VALUES (:attribute_set_id, :external_id, :display_value, :value, :sort_order)');
@@ -106,12 +121,18 @@ final class InitialCatalogSeeder extends AbstractSeeder
 
             $productId = $product['id'];
 
+            $categoryName = (string) ($product['category'] ?? 'all');
+            $categoryId = $categoryMap[$categoryName] ?? null;
+            if ($categoryId === null) {
+                throw new RuntimeException('Missing category for product: ' . $categoryName);
+            }
+
             $insertProduct->execute([
                 'id' => $productId,
                 'name' => (string) ($product['name'] ?? ''),
                 'in_stock' => (int) (!empty($product['inStock'])),
                 'description' => (string) ($product['description'] ?? ''),
-                'category_name' => (string) ($product['category'] ?? 'all'),
+                'category_id' => $categoryId,
                 'brand' => (string) ($product['brand'] ?? ''),
             ]);
 
@@ -192,5 +213,14 @@ final class InitialCatalogSeeder extends AbstractSeeder
     private function resolveDataPath(): string
     {
         return dirname(__DIR__, 5) . '/schema.json';
+    }
+
+    private function slugify(string $name): string
+    {
+        $slug = strtolower($name);
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug) ?? '';
+        $slug = preg_replace('/(^-|-$)+/', '', $slug) ?? '';
+
+        return $slug;
     }
 }

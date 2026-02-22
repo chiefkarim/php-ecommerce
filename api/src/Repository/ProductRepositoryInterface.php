@@ -11,7 +11,7 @@ interface ProductRepositoryInterface
     /**
      * @return array<int, AbstractProduct>
      */
-    public function findByCategory(?string $category): array;
+    public function findByCategory(?int $categoryId): array;
 
     public function findById(string $productId): ?AbstractProduct;
 }

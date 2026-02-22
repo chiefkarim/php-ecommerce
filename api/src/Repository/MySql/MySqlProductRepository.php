@@ -14,17 +14,17 @@ use App\Repository\ProductRepositoryInterface;
 
 final class MySqlProductRepository extends AbstractMySqlRepository implements ProductRepositoryInterface
 {
-    public function findByCategory(?string $category): array
+    public function findByCategory(?int $categoryId): array
     {
-        if ($category === null || $category === 'all') {
+        if ($categoryId === null) {
             $statement = $this->pdo()->query(
-                'SELECT id, name, in_stock, description, category_name, brand FROM products ORDER BY id ASC'
+                'SELECT id, name, in_stock, description, category_id, brand FROM products ORDER BY id ASC'
             );
         } else {
             $statement = $this->pdo()->prepare(
-                'SELECT id, name, in_stock, description, category_name, brand FROM products WHERE category_name = :category ORDER BY id ASC'
+                'SELECT id, name, in_stock, description, category_id, brand FROM products WHERE category_id = :category_id ORDER BY id ASC'
             );
-            $statement->execute(['category' => $category]);
+            $statement->execute(['category_id' => $categoryId]);
         }
 
         $rows = $statement !== false ? $statement->fetchAll() : [];
@@ -35,7 +35,7 @@ final class MySqlProductRepository extends AbstractMySqlRepository implements Pr
     public function findById(string $productId): ?AbstractProduct
     {
         $statement = $this->pdo()->prepare(
-            'SELECT id, name, in_stock, description, category_name, brand FROM products WHERE id = :id LIMIT 1'
+            'SELECT id, name, in_stock, description, category_id, brand FROM products WHERE id = :id LIMIT 1'
         );
         $statement->execute(['id' => $productId]);
 
@@ -59,7 +59,7 @@ final class MySqlProductRepository extends AbstractMySqlRepository implements Pr
             'name' => (string) $row['name'],
             'inStock' => (bool) $row['in_stock'],
             'description' => (string) $row['description'],
-            'category' => (string) $row['category_name'],
+            'categoryId' => (int) $row['category_id'],
             'brand' => (string) $row['brand'],
             'gallery' => $this->loadGallery($productId),
             'attributes' => $this->loadAttributes($productId),

@@ -20,7 +20,7 @@ abstract class AbstractProduct
         public readonly bool $inStock,
         public readonly array $gallery,
         public readonly string $description,
-        public readonly string $category,
+        public readonly int $categoryId,
         public readonly string $brand,
         public readonly array $attributes,
         public readonly array $prices
