@@ -6,7 +6,7 @@ namespace App\Infrastructure\Database\Migration;
 
 use PDO;
 
-final class InitialSchemaMigration
+final class InitialSchemaMigration extends AbstractMigration
 {
     public function up(PDO $pdo): void
     {

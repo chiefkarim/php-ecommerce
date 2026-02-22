@@ -8,10 +8,11 @@ use PDO;
 use RuntimeException;
 use Throwable;
 
-final class InitialCatalogSeeder
+final class InitialCatalogSeeder extends AbstractSeeder
 {
-    public function run(PDO $pdo, string $dataPath): void
+    public function run(PDO $pdo): void
     {
+        $dataPath = $this->resolveDataPath();
         $this->assertFirstRun($pdo);
 
         $data = $this->loadSeedData($dataPath);
@@ -186,5 +187,10 @@ final class InitialCatalogSeeder
     private function writeSuccessMessage(): void
     {
         fwrite(STDOUT, "Seed completed successfully.\n");
+    }
+
+    private function resolveDataPath(): string
+    {
+        return dirname(__DIR__, 5) . '/schema.json';
     }
 }

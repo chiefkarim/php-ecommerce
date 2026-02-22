@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Infrastructure\Config\DotenvLoader;
 use App\Infrastructure\Database\ConnectionFactory;
-use App\Infrastructure\Database\Seed\InitialCatalogSeeder;
+use App\Infrastructure\Database\Seed\SeederRunner;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -14,7 +14,8 @@ DotenvLoader::boot([
 ]);
 
 $pdo = (new ConnectionFactory())->create();
-$dataPath = dirname(__DIR__, 2) . '/schema.json';
 
-$seeder = new InitialCatalogSeeder();
-$seeder->run($pdo, $dataPath);
+$onlyClass = $argv[1] ?? null;
+
+$runner = new SeederRunner();
+$runner->run($pdo, $onlyClass);
