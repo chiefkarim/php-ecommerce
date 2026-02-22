@@ -39,7 +39,7 @@ Examples:
 - Local backend:
   - `VITE_GRAPHQL_ENDPOINT=http://localhost:8000/graphql`
 - Production frontend context:
-  - `https://php-ecommerce-puce.vercel.app/category/all`
+  - `https://php-ecommerce-puce.vercel.app/all`
 
 ## Troubleshooting
 - After changing `.env`, restart Vite dev server.

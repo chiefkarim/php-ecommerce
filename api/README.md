@@ -83,11 +83,12 @@ It also handles `OPTIONS` preflight requests.
 ## Example Query
 ```graphql
 query {
-  categories { name }
-  products(category: "tech") {
+  categories { id name slug }
+  products(categoryId: "1") {
     id
     name
     inStock
+    categoryId
     prices { amount currency { label symbol } }
   }
 }

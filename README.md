@@ -25,6 +25,7 @@ cd api
 cp .env.example .env
 composer install
 composer migrate -- up
+composer migrate -- up UpdateCategorySlugAndIdMigration
 composer seed
 php -S localhost:8000 -t public
 ```
