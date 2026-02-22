@@ -19,7 +19,6 @@ final class InitialCatalogSeeder
         $pdo->beginTransaction();
 
         try {
-            $this->clearTables($pdo);
             $this->seedCategories($pdo, $data['categories']);
             $this->seedProducts($pdo, $data['products']);
 
@@ -69,22 +68,6 @@ final class InitialCatalogSeeder
         if ($count > 0) {
             throw new RuntimeException('Seed aborted: database already initialized');
         }
-    }
-
-    private function clearTables(PDO $pdo): void
-    {
-        $pdo->exec('SET FOREIGN_KEY_CHECKS=0');
-        $pdo->exec('DELETE FROM order_item_selected_attributes');
-        $pdo->exec('DELETE FROM order_items');
-        $pdo->exec('DELETE FROM orders');
-        $pdo->exec('DELETE FROM prices');
-        $pdo->exec('DELETE FROM attribute_items');
-        $pdo->exec('DELETE FROM attribute_sets');
-        $pdo->exec('DELETE FROM product_galleries');
-        $pdo->exec('DELETE FROM products');
-        $pdo->exec('DELETE FROM currencies');
-        $pdo->exec('DELETE FROM categories');
-        $pdo->exec('SET FOREIGN_KEY_CHECKS=1');
     }
 
     /**
