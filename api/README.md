@@ -19,6 +19,24 @@ cp .env.example .env
 composer install
 ```
 
+## Domain Modeling
+- Categories use polymorphism:
+  - `App\\Domain\\Category\\Category` (abstract base)
+  - `AllCategory`, `StandardCategory` (concrete types)
+  - `CategoryTypeFactory` for subtype creation
+- Products use polymorphism:
+  - `App\\Domain\\Product\\AbstractProduct` (abstract base)
+  - `ApparelProduct`, `TechProduct`, `GenericProduct` (concrete types)
+  - `ProductTypeFactory` maps category slug to product subtype
+- Attributes use polymorphism:
+  - `App\\Domain\\Attribute\\AbstractAttributeSet` (abstract base)
+  - `TextAttributeSet`, `SwatchAttributeSet` (concrete types)
+  - `AttributeSetFactory` for subtype creation
+
+## Order Validation Flow
+- `OrderService` delegates attribute-selection validation to product model methods.
+- Product types normalize and validate selected attributes through subclass behavior.
+
 ## Seed Database
 Uses root `schema.json` as source data.
 ```bash
@@ -62,15 +80,23 @@ php -S localhost:8000 -t public
 GraphQL endpoint:
 - `POST /graphql`
 
+## Validation
+```bash
+composer test
+```
+
+Latest known result in this workspace:
+- `OK (17 tests, 38 assertions)`
+
 ## Docker Run
 Build from repository root:
 ```bash
-docker build -f api/Dockerfile -t php-ecommerce-api .
+docker build -f api/Dockerfile -t <dockerhub-username>/php-ecommerce-api:<tag> .
 ```
 
 Run locally:
 ```bash
-docker run --rm -p 8000:8080 -e PORT=8080 -e DATABASE_URL="mysql://user:password@host:3306/scandiweb" php-ecommerce-api
+docker run --rm -p 8000:8080 -e PORT=8080 -e DATABASE_URL="mysql://user:password@host:3306/scandiweb" <dockerhub-username>/php-ecommerce-api:<tag>
 ```
 
 ## CORS Behavior

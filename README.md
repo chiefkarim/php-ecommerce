@@ -42,15 +42,32 @@ pnpm dev
 - `POST /graphql`
 - Local URL: `http://localhost:8000/graphql`
 
+## Current Backend Modeling
+- Category model uses polymorphism (`Category` abstract base with concrete category types).
+- Product model uses polymorphism (`AbstractProduct` with concrete subtype classes).
+- Attribute model uses polymorphism (`AbstractAttributeSet` with typed subclasses).
+- Order selection validation is delegated to product models.
+
+## Validation
+- API tests:
+```bash
+composer test --working-dir=api
+```
+- Frontend checks:
+```bash
+pnpm --dir client test
+pnpm --dir client build
+```
+
 ## API Docker (Cloud Run-friendly)
 Build from repo root:
 ```bash
-docker build -f api/Dockerfile -t <dockerhub-username>/php-ecommerce-api:latest .
+docker build -f api/Dockerfile -t <dockerhub-username>/php-ecommerce-api:<tag> .
 ```
 
 Run locally:
 ```bash
-docker run --rm -p 8000:8080 -e PORT=8080 -e DATABASE_URL="mysql://user:password@host:3306/database" <dockerhub-username>/php-ecommerce-api:latest
+docker run --rm -p 8000:8080 -e PORT=8080 -e DATABASE_URL="mysql://user:password@host:3306/database" <dockerhub-username>/php-ecommerce-api:<tag>
 ```
 
 ## Deployment Notes
