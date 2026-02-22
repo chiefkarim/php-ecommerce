@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Infrastructure\Database\ConnectionFactory;
-use App\Infrastructure\Database\InitialDatabaseSeeder;
 use App\Infrastructure\Config\DotenvLoader;
+use App\Infrastructure\Database\ConnectionFactory;
+use App\Infrastructure\Database\InitialCatalogSeeder;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -14,8 +14,7 @@ DotenvLoader::boot([
 ]);
 
 $pdo = (new ConnectionFactory())->create();
-$schemaPath = __DIR__ . '/../database/schema.sql';
 $dataPath = dirname(__DIR__, 2) . '/schema.json';
 
-$seeder = new InitialDatabaseSeeder();
-$seeder->run($pdo, $schemaPath, $dataPath);
+$seeder = new InitialCatalogSeeder();
+$seeder->run($pdo, $dataPath);

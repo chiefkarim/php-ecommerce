@@ -8,13 +8,10 @@ use PDO;
 use RuntimeException;
 use Throwable;
 
-final class InitialDatabaseSeeder
+final class InitialCatalogSeeder
 {
-    public function run(PDO $pdo, string $schemaPath, string $dataPath): void
+    public function run(PDO $pdo, string $dataPath): void
     {
-        $schemaSql = $this->loadSchemaSql($schemaPath);
-        $pdo->exec($schemaSql);
-
         $this->assertFirstRun($pdo);
 
         $data = $this->loadSeedData($dataPath);
@@ -35,20 +32,6 @@ final class InitialDatabaseSeeder
 
             throw $throwable;
         }
-    }
-
-    private function loadSchemaSql(string $schemaPath): string
-    {
-        if (!file_exists($schemaPath)) {
-            throw new RuntimeException('Schema file not found: ' . $schemaPath);
-        }
-
-        $schemaSql = file_get_contents($schemaPath);
-        if (!is_string($schemaSql)) {
-            throw new RuntimeException('Unable to read schema SQL');
-        }
-
-        return $schemaSql;
     }
 
     /**

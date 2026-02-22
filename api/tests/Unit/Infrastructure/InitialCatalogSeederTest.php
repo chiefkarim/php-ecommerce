@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Infrastructure;
 
-use App\Infrastructure\Database\InitialDatabaseSeeder;
+use App\Infrastructure\Database\InitialCatalogSeeder;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-final class InitialDatabaseSeederTest extends TestCase
+final class InitialCatalogSeederTest extends TestCase
 {
     private string $tempDir;
 
@@ -44,7 +44,7 @@ final class InitialDatabaseSeederTest extends TestCase
             ],
         ], JSON_THROW_ON_ERROR));
 
-        $seeder = new InitialDatabaseSeeder();
+        $seeder = new InitialCatalogSeeder();
         $data = $this->invokeLoadSeedData($seeder, $file);
 
         self::assertSame([['name' => 'all']], $data['categories']);
@@ -56,7 +56,7 @@ final class InitialDatabaseSeederTest extends TestCase
         $file = $this->tempDir . '/schema.json';
         file_put_contents($file, json_encode(['invalid' => true], JSON_THROW_ON_ERROR));
 
-        $seeder = new InitialDatabaseSeeder();
+        $seeder = new InitialCatalogSeeder();
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Invalid schema.json shape');
@@ -67,7 +67,7 @@ final class InitialDatabaseSeederTest extends TestCase
     /**
      * @return array{categories: array<int, mixed>, products: array<int, mixed>}
      */
-    private function invokeLoadSeedData(InitialDatabaseSeeder $seeder, string $file): array
+    private function invokeLoadSeedData(InitialCatalogSeeder $seeder, string $file): array
     {
         $method = new \ReflectionMethod($seeder, 'loadSeedData');
         $method->setAccessible(true);
