@@ -28,7 +28,14 @@ final class CatalogService
      */
     public function products(?int $categoryId): array
     {
-        return $this->productRepository->findByCategory($categoryId);
+        if ($categoryId === null) {
+            return $this->productRepository->findByCategory(null);
+        }
+
+        $category = $this->categoryRepository->findById($categoryId);
+        $resolvedCategoryId = $category?->productFilterCategoryId() ?? $categoryId;
+
+        return $this->productRepository->findByCategory($resolvedCategoryId);
     }
 
     public function product(string $productId): ?AbstractProduct

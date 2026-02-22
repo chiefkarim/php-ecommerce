@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Domain\Attribute\AbstractAttributeSet;
 use App\Domain\Order\OrderItemData;
-use App\Domain\Order\OrderItemSelection;
 use App\Domain\Order\PlaceOrderResult;
 use App\Domain\Product\AbstractProduct;
 use App\Infrastructure\Error\ValidationException;
@@ -59,7 +57,7 @@ final class OrderService
                     throw new ValidationException(sprintf('Product not found: %s', $productId));
                 }
 
-                $selectedAttributes = $this->validateAndMapSelectedAttributes($product, $selectedAttributesInput);
+                $selectedAttributes = $product->validateSelections($selectedAttributesInput);
                 $unitAmount = $this->resolveUnitAmount($product);
                 $computedTotalAmount += $unitAmount * $quantity;
 
@@ -86,47 +84,6 @@ final class OrderService
         }
     }
 
-    /**
-     * @param mixed $selectedAttributesInput
-     * @return array<int, OrderItemSelection>
-     */
-    private function validateAndMapSelectedAttributes(AbstractProduct $product, mixed $selectedAttributesInput): array
-    {
-        $provided = [];
-
-        if (is_array($selectedAttributesInput)) {
-            foreach ($selectedAttributesInput as $item) {
-                if (!is_array($item)) {
-                    continue;
-                }
-
-                $attributeId = (string) ($item['attributeId'] ?? '');
-                $itemId = (string) ($item['itemId'] ?? '');
-
-                if ($attributeId !== '' && $itemId !== '') {
-                    $provided[$attributeId] = $itemId;
-                }
-            }
-        }
-
-        $result = [];
-
-        foreach ($product->attributes as $attributeSet) {
-            $selectedItemId = $provided[$attributeSet->id] ?? null;
-            if (!is_string($selectedItemId) || $selectedItemId === '') {
-                throw new ValidationException(sprintf('Missing selection for attribute: %s', $attributeSet->id));
-            }
-
-            if (!$this->attributeContainsItem($attributeSet, $selectedItemId)) {
-                throw new ValidationException(sprintf('Invalid selection for attribute: %s', $attributeSet->id));
-            }
-
-            $result[] = new OrderItemSelection($attributeSet->id, $selectedItemId);
-        }
-
-        return $result;
-    }
-
     private function resolveUnitAmount(AbstractProduct $product): float
     {
         if ($product->prices === []) {
@@ -134,16 +91,5 @@ final class OrderService
         }
 
         return round((float) $product->prices[0]->amount, 2);
-    }
-
-    private function attributeContainsItem(AbstractAttributeSet $attributeSet, string $itemId): bool
-    {
-        foreach ($attributeSet->items as $attributeItem) {
-            if ($attributeItem->id === $itemId) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

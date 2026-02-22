@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Category;
 
-final class Category
+abstract class Category
 {
     public function __construct(
         public readonly int $id,
@@ -12,4 +12,8 @@ final class Category
         public readonly string $slug
     ) {
     }
+
+    abstract public function productFilterCategoryId(): ?int;
+
+    abstract public function isAggregateCategory(): bool;
 }

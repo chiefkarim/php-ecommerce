@@ -18,11 +18,18 @@ final class MySqlProductRepository extends AbstractMySqlRepository implements Pr
     {
         if ($categoryId === null) {
             $statement = $this->pdo()->query(
-                'SELECT id, name, in_stock, description, category_id, brand FROM products ORDER BY id ASC'
+                'SELECT p.id, p.name, p.in_stock, p.description, p.category_id, p.brand, c.slug AS category_slug
+                FROM products p
+                INNER JOIN categories c ON c.id = p.category_id
+                ORDER BY p.id ASC'
             );
         } else {
             $statement = $this->pdo()->prepare(
-                'SELECT id, name, in_stock, description, category_id, brand FROM products WHERE category_id = :category_id ORDER BY id ASC'
+                'SELECT p.id, p.name, p.in_stock, p.description, p.category_id, p.brand, c.slug AS category_slug
+                FROM products p
+                INNER JOIN categories c ON c.id = p.category_id
+                WHERE p.category_id = :category_id
+                ORDER BY p.id ASC'
             );
             $statement->execute(['category_id' => $categoryId]);
         }
@@ -35,7 +42,11 @@ final class MySqlProductRepository extends AbstractMySqlRepository implements Pr
     public function findById(string $productId): ?AbstractProduct
     {
         $statement = $this->pdo()->prepare(
-            'SELECT id, name, in_stock, description, category_id, brand FROM products WHERE id = :id LIMIT 1'
+            'SELECT p.id, p.name, p.in_stock, p.description, p.category_id, p.brand, c.slug AS category_slug
+            FROM products p
+            INNER JOIN categories c ON c.id = p.category_id
+            WHERE p.id = :id
+            LIMIT 1'
         );
         $statement->execute(['id' => $productId]);
 
@@ -60,6 +71,7 @@ final class MySqlProductRepository extends AbstractMySqlRepository implements Pr
             'inStock' => (bool) $row['in_stock'],
             'description' => (string) $row['description'],
             'categoryId' => (int) $row['category_id'],
+            'categorySlug' => (string) ($row['category_slug'] ?? ''),
             'brand' => (string) $row['brand'],
             'gallery' => $this->loadGallery($productId),
             'attributes' => $this->loadAttributes($productId),

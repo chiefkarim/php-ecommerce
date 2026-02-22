@@ -12,4 +12,6 @@ interface CategoryRepositoryInterface
      * @return array<int, Category>
      */
     public function findAll(): array;
+
+    public function findById(int $categoryId): ?Category;
 }
