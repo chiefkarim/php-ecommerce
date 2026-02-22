@@ -24,6 +24,8 @@ Monorepo for a PHP GraphQL API and React SPA storefront.
 cd api
 cp .env.example .env
 composer install
+composer migrate -- up
+composer seed
 php -S localhost:8000 -t public
 ```
 

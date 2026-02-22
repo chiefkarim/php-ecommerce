@@ -23,8 +23,35 @@ composer install
 Uses root `schema.json` as source data.
 ```bash
 cd api
-DATABASE_URL='mysql://user:password@localhost:3306/scandiweb' php bin/seed.php
+DATABASE_URL='mysql://user:password@localhost:3306/scandiweb' composer seed
 ```
+
+Seed a single seeder class by name (no namespace):
+```bash
+cd api
+DATABASE_URL='mysql://user:password@localhost:3306/scandiweb' composer seed -- InitialCatalogSeeder
+```
+
+## Run Migrations
+Migrations are discovered from `src/Infrastructure/Database/Migration` and run in filename order.
+```bash
+cd api
+DATABASE_URL='mysql://user:password@localhost:3306/scandiweb' composer migrate -- up
+```
+
+Rollback all migrations (reverse order):
+```bash
+cd api
+DATABASE_URL='mysql://user:password@localhost:3306/scandiweb' composer migrate -- down
+```
+
+Run a single migration by class name (no namespace):
+```bash
+cd api
+DATABASE_URL='mysql://user:password@localhost:3306/scandiweb' composer migrate -- up InitialSchemaMigration
+```
+
+When running without a class name, the script warns and waits 3 seconds before executing all items.
 
 ## Run Locally (PHP built-in server)
 ```bash
