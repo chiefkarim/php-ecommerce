@@ -16,20 +16,22 @@ type ProductPayload = {
 const CATEGORIES_QUERY = `
   query GetCategories {
     categories {
+      id
       name
+      slug
     }
   }
 `;
 
 const PRODUCTS_QUERY = `
-  query GetProducts($category: String) {
-    products(category: $category) {
+  query GetProducts($categoryId: ID) {
+    products(categoryId: $categoryId) {
       id
       name
       inStock
       gallery
       description
-      category
+      categoryId
       brand
       attributes {
         id
@@ -60,7 +62,7 @@ const PRODUCT_QUERY = `
       inStock
       gallery
       description
-      category
+      categoryId
       brand
       attributes {
         id
@@ -88,8 +90,12 @@ export async function getCategories(): Promise<Category[]> {
   return payload.categories;
 }
 
-export async function getProducts(category: string): Promise<Product[]> {
-  const payload = await graphqlRequest<ProductsPayload, { category: string }>(PRODUCTS_QUERY, { category });
+export async function getProducts(categoryId: string | null): Promise<Product[]> {
+  const variables = categoryId ? { categoryId } : undefined;
+  const payload = await graphqlRequest<ProductsPayload, { categoryId: string } | undefined>(
+    PRODUCTS_QUERY,
+    variables
+  );
   return payload.products;
 }
 
