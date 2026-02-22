@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Infrastructure;
 
-use App\Infrastructure\Database\InitialCatalogSeeder;
+use App\Infrastructure\Database\Seed\InitialCatalogSeeder;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

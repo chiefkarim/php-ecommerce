@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Infrastructure\Config\DotenvLoader;
 use App\Infrastructure\Database\ConnectionFactory;
-use App\Infrastructure\Database\InitialSchemaMigration;
+use App\Infrastructure\Database\Migration\InitialSchemaMigration;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
