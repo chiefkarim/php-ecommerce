@@ -21,6 +21,7 @@
         }
     },
     "scripts": {
+        "migrate": "php bin/migrate.php",
         "test": "phpunit",
         "seed": "php bin/seed.php"
     },
