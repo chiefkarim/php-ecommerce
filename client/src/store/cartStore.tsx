@@ -11,8 +11,7 @@ export type CartAction =
   | { type: 'DECREMENT'; key: string }
   | { type: 'REMOVE'; key: string }
   | { type: 'TOGGLE_OPEN'; value?: boolean }
-  | { type: 'CLEAR' }
-  | { type: 'HYDRATE'; payload: CartState };
+  | { type: 'CLEAR' };
 
 export const initialState: CartState = {
   items: [],
@@ -40,8 +39,6 @@ function toCartItem(payload: AddToCartPayload): CartItem {
 
 export function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
-    case 'HYDRATE':
-      return action.payload;
     case 'TOGGLE_OPEN':
       return { ...state, isOpen: action.value ?? !state.isOpen };
     case 'ADD_ITEM': {
@@ -88,6 +85,29 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
   }
 }
 
+function getInitialState(defaultState: CartState): CartState {
+  if (typeof window === 'undefined') {
+    return defaultState;
+  }
+
+  const rawValue = window.localStorage.getItem(STORAGE_KEY);
+  if (!rawValue) {
+    return defaultState;
+  }
+
+  try {
+    const parsed = JSON.parse(rawValue) as CartState;
+    if (!Array.isArray(parsed.items)) {
+      return defaultState;
+    }
+
+    return parsed;
+  } catch {
+    window.localStorage.removeItem(STORAGE_KEY);
+    return defaultState;
+  }
+}
+
 export type CartContextValue = {
   state: CartState;
   addItem: (payload: AddToCartPayload) => void;
@@ -104,25 +124,13 @@ export type CartContextValue = {
 export const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [state, dispatch] = useReducer(cartReducer, initialState, getInitialState);
 
   useEffect(() => {
-    const rawValue = window.localStorage.getItem(STORAGE_KEY);
-    if (!rawValue) {
+    if (typeof window === 'undefined') {
       return;
     }
 
-    try {
-      const parsed = JSON.parse(rawValue) as CartState;
-      if (Array.isArray(parsed.items)) {
-        dispatch({ type: 'HYDRATE', payload: parsed });
-      }
-    } catch {
-      window.localStorage.removeItem(STORAGE_KEY);
-    }
-  }, []);
-
-  useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
