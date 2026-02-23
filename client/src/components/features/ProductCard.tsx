@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import type { MouseEvent } from 'react';
 import type { Product } from '../../types/catalog';
-import { useCart, getDefaultSelections } from '../../store/cartStore';
+import { useCart } from '../../hooks/useCart';
+import { getDefaultSelections } from '../../store/cartStore';
 import { formatPrice, toKebabCase } from '../../utils/format';
 
 export function ProductCard({ product }: { product: Product }): JSX.Element {

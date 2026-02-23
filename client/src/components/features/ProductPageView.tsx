@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Product } from '../../types/catalog';
-import { useCart } from '../../store/cartStore';
+import { useCart } from '../../hooks/useCart';
 import { formatPrice, toKebabCase } from '../../utils/format';
 import { htmlToReact } from '../../utils/htmlToReact';
 

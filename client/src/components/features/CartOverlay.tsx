@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { usePlaceOrder } from '../../hooks/usePlaceOrder';
-import { useCart } from '../../store/cartStore';
+import { useCart } from '../../hooks/useCart';
 import { formatPrice, toKebabCase } from '../../utils/format';
 
 function itemLabel(totalItems: number): string {

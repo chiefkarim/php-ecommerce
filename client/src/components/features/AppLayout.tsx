@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { useCart } from '../../store/cartStore';
+import { useCart } from '../../hooks/useCart';
 import { Header } from './Header';
 import { CartOverlay } from './CartOverlay';
 

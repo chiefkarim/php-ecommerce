@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useCategories } from '../../hooks/useCategories';
-import { useCart } from '../../store/cartStore';
+import { useCart } from '../../hooks/useCart';
 import { ErrorState } from '../base/ErrorState';
 import { LoadingState } from '../base/LoadingState';
 

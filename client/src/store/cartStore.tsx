@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { createContext, useEffect, useMemo, useReducer } from 'react';
 import type { AddToCartPayload, CartItem, CartState, SelectedAttributes } from '../types/cart';
 import type { AttributeSet } from '../types/catalog';
 import type { PlaceOrderInput } from '../types/order';
@@ -88,7 +88,7 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
   }
 }
 
-type CartContextValue = {
+export type CartContextValue = {
   state: CartState;
   addItem: (payload: AddToCartPayload) => void;
   increment: (key: string) => void;
@@ -101,7 +101,7 @@ type CartContextValue = {
   toOrderInput: () => PlaceOrderInput;
 };
 
-const CartContext = createContext<CartContextValue | null>(null);
+export const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [state, dispatch] = useReducer(cartReducer, initialState);
@@ -160,15 +160,6 @@ export function CartProvider({ children }: { children: React.ReactNode }): JSX.E
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
-}
-
-export function useCart(): CartContextValue {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within CartProvider');
-  }
-
-  return context;
 }
 
 export function getDefaultSelections(attributes: AttributeSet[]): SelectedAttributes {
