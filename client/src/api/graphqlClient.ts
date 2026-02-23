@@ -1,7 +1,7 @@
 export class GraphQLErrorResponse extends Error {
   constructor(public readonly messages: string[]) {
-    super(messages.join('; '));
-    this.name = 'GraphQLErrorResponse';
+    super(messages.join("; "));
+    this.name = "GraphQLErrorResponse";
   }
 }
 
@@ -10,39 +10,20 @@ export type GraphQLResponse<TData> = {
   errors?: Array<{ message: string }>;
 };
 
-const envEndpoint = import.meta.env.VITE_GRAPHQL_ENDPOINT as string | undefined;
-const envBackendUrl = import.meta.env.VITE_BACKEND_URL as string | undefined;
+const API_URL = import.meta.env.VITE_GRAPHQL_ENDPOINT;
 
-const normalizeEndpoint = (endpoint: string): string => {
-  if (endpoint.startsWith('/')) {
-    return endpoint;
-  }
+if (!API_URL?.trim()) {
+  throw new Error("Missing VITE_GRAPHQL_ENDPOINT. Backend URL is required.");
+}
 
-  try {
-    const url = new URL(endpoint);
-    if (url.pathname === '' || url.pathname === '/') {
-      url.pathname = '/graphql';
-    }
-    return url.toString();
-  } catch {
-    return endpoint;
-  }
-};
-
-const API_URL = envEndpoint
-  ? normalizeEndpoint(envEndpoint)
-  : envBackendUrl
-    ? normalizeEndpoint(envBackendUrl)
-    : '/graphql';
-
-export async function graphqlRequest<TData, TVariables extends Record<string, unknown> | undefined>(
-  query: string,
-  variables?: TVariables
-): Promise<TData> {
+export async function graphqlRequest<
+  TData,
+  TVariables extends Record<string, unknown> | undefined,
+>(query: string, variables?: TVariables): Promise<TData> {
   const response = await fetch(API_URL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ query, variables }),
   });
@@ -58,7 +39,7 @@ export async function graphqlRequest<TData, TVariables extends Record<string, un
   }
 
   if (!json.data) {
-    throw new Error('Missing GraphQL data payload');
+    throw new Error("Missing GraphQL data payload");
   }
 
   return json.data;
