@@ -90,10 +90,10 @@ final class SeederRunner
         fwrite(
             STDOUT,
             sprintf(
-                "Warning: running all %s in 3 seconds. Press CTRL+C to abort.\n",
+                "Warning: running all %s in 5 seconds. Press CTRL+C to abort.\n",
                 $kind
             )
         );
-        sleep(3);
+        sleep(5);
     }
 }

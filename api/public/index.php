@@ -3,16 +3,17 @@
 declare(strict_types=1);
 
 use App\Controller\GraphQL;
-use App\Infrastructure\Config\DotenvLoader;
+use Dotenv\Dotenv;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-DotenvLoader::boot([
-    __DIR__ . '/../.env',
-    dirname(__DIR__, 2) . '/.env',
+$dotenv = Dotenv::createImmutable([
+    __DIR__ . '/../',
+    dirname(__DIR__, 2),
 ]);
+$dotenv->safeLoad();
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 $allowOrigin = false;

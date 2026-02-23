@@ -116,11 +116,11 @@ final class MigrationRunner
         fwrite(
             STDOUT,
             sprintf(
-                "Warning: running %s %s for all discovered items in 3 seconds. Press CTRL+C to abort.\n",
+                "Warning: running %s %s for all discovered items in 5 seconds. Press CTRL+C to abort.\n",
                 $kind,
                 $direction
             )
         );
-        sleep(3);
+        sleep(5);
     }
 }

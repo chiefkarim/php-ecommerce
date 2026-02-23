@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-use App\Infrastructure\Config\DotenvLoader;
 use App\Infrastructure\Database\ConnectionFactory;
 use App\Infrastructure\Database\Seed\SeederRunner;
+use Dotenv\Dotenv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-DotenvLoader::boot([
-    __DIR__ . '/../.env',
-    dirname(__DIR__, 2) . '/.env',
+$dotenv = Dotenv::createImmutable([
+    __DIR__ . '/../',
+    dirname(__DIR__, 2),
 ]);
+$dotenv->safeLoad();
 
 $pdo = (new ConnectionFactory())->create();
 
