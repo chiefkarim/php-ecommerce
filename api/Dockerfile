@@ -1,12 +1,12 @@
 FROM composer:2.7 AS vendor
 WORKDIR /app/api
-COPY api/composer.json api/composer.lock ./
+COPY composer.json composer.lock ./
 RUN composer install \
   --no-dev \
   --optimize-autoloader \
   --prefer-dist \
   --no-interaction
-COPY api/ ./
+COPY . ./
 
 FROM php:8.2-cli-alpine AS runtime
 WORKDIR /var/www/html
