@@ -6,7 +6,7 @@ namespace App\Infrastructure\Database\Migration;
 
 use PDO;
 
-final class UpdateCategorySlugAndIdMigration extends AbstractMigration
+final class UpdateCategorySlugAndIdMigration implements MigrationInterface
 {
     public function up(PDO $pdo): void
     {

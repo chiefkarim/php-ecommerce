@@ -8,7 +8,7 @@ use PDO;
 use RuntimeException;
 use Throwable;
 
-final class InitialCatalogSeeder extends AbstractSeeder
+final class InitialCatalogSeeder implements SeederInterface
 {
     public function run(PDO $pdo): void
     {

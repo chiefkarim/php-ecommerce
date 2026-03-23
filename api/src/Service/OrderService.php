@@ -57,6 +57,10 @@ final class OrderService
                     throw new ValidationException(sprintf('Product not found: %s', $productId));
                 }
 
+                if (!$product->inStock) {
+                    throw new ValidationException(sprintf('Product is out of stock: %s', $product->name));
+                }
+
                 $selectedAttributes = $product->validateSelections($selectedAttributesInput);
                 $unitAmount = $this->resolveUnitAmount($product);
                 $computedTotalAmount += $unitAmount * $quantity;

@@ -39,7 +39,7 @@ final class MigrationRunner
     }
 
     /**
-     * @return array<string, class-string<AbstractMigration>>
+     * @return array<string, class-string<MigrationInterface>>
      */
     private function resolveMigrations(): array
     {
@@ -51,7 +51,7 @@ final class MigrationRunner
 
         foreach ($files as $file) {
             $filename = basename($file);
-            if (in_array($filename, ['AbstractMigration.php', 'MigrationRunner.php'], true)) {
+            if (in_array($filename, ['MigrationInterface.php', 'MigrationRunner.php'], true)) {
                 continue;
             }
 
@@ -62,8 +62,8 @@ final class MigrationRunner
                 throw new RuntimeException('Migration class not found: ' . $fqcn);
             }
 
-            if (!is_subclass_of($fqcn, AbstractMigration::class)) {
-                throw new RuntimeException('Migration must extend AbstractMigration: ' . $fqcn);
+            if (!is_subclass_of($fqcn, MigrationInterface::class)) {
+                throw new RuntimeException('Migration must implement MigrationInterface: ' . $fqcn);
             }
 
             $migrations[$className] = $fqcn;
@@ -77,7 +77,7 @@ final class MigrationRunner
     }
 
     /**
-     * @param class-string<AbstractMigration> $class
+     * @param class-string<MigrationInterface> $class
      */
     private function runMigration(PDO $pdo, string $direction, string $class): void
     {

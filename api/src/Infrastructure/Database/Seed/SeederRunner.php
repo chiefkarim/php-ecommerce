@@ -34,7 +34,7 @@ final class SeederRunner
     }
 
     /**
-     * @return array<string, class-string<AbstractSeeder>>
+     * @return array<string, class-string<SeederInterface>>
      */
     private function resolveSeeders(): array
     {
@@ -46,7 +46,7 @@ final class SeederRunner
 
         foreach ($files as $file) {
             $filename = basename($file);
-            if (in_array($filename, ['AbstractSeeder.php', 'SeederRunner.php'], true)) {
+            if (in_array($filename, ['SeederInterface.php', 'SeederRunner.php'], true)) {
                 continue;
             }
 
@@ -57,8 +57,8 @@ final class SeederRunner
                 throw new RuntimeException('Seeder class not found: ' . $fqcn);
             }
 
-            if (!is_subclass_of($fqcn, AbstractSeeder::class)) {
-                throw new RuntimeException('Seeder must extend AbstractSeeder: ' . $fqcn);
+            if (!is_subclass_of($fqcn, SeederInterface::class)) {
+                throw new RuntimeException('Seeder must implement SeederInterface: ' . $fqcn);
             }
 
             $seeders[$className] = $fqcn;
@@ -72,7 +72,7 @@ final class SeederRunner
     }
 
     /**
-     * @param class-string<AbstractSeeder> $class
+     * @param class-string<SeederInterface> $class
      */
     private function runSeeder(PDO $pdo, string $class): void
     {

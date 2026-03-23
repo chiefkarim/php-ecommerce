@@ -6,7 +6,7 @@ namespace App\Infrastructure\Database\Seed;
 
 use PDO;
 
-abstract class AbstractSeeder
+interface SeederInterface
 {
-    abstract public function run(PDO $pdo): void;
+    public function run(PDO $pdo): void;
 }
