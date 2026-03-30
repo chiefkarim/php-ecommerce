@@ -30,7 +30,7 @@ export function ProductGallery({ product }: ProductGalleryProps): JSX.Element {
 
   return (
     <>
-      <div className="order-2 flex gap-3 overflow-x-auto md:order-1 md:max-h-[560px] md:flex-col md:overflow-y-auto md:overflow-x-hidden md:pr-4">
+      <div className="order-2 flex gap-3 overflow-x-auto md:order-1 md:max-h-[560px] md:flex-col md:overflow-y-auto md:overflow-x-hidden md:pr-4 md:[scrollbar-gutter:stable]">
         {product.gallery.map((image, index) => (
           <button
             key={image}
